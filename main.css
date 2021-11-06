@@ -1,3 +1,60 @@
 :root {
     font-family: sans-serif;
+    --first-group-width: 10vw;
+}
+
+.navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu__div {
+    display: none;
+    position: absolute;
+    transform: translate(70%, -34%);
+}
+
+.menu__div--unshifted {
+    left: initial;
+    transform: none;
+}
+
+.menu__ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.menu__li {
+    background-color: beige;
+    border-radius: 1px;
+}
+
+.menu__li, .menu__p, .menu__ul {
+    width: var(--first-group-width);
+}
+
+.menu__li:hover > .menu__div {
+    display: block;
+}
+
+.menu__p {
+    margin: 0;
+}
+
+.title {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title__text {
+    margin: 0.25em;
+}
+
+.title__legend {
+    font-size: 0.5rem;
+    font-style: italic;
 }
