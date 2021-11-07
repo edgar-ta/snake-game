@@ -11,66 +11,55 @@
 </head>
 <body>
     <div class="navbar">
-        <!-- div.menu>p.menu__p+ul.menu__ul>(li.menu__li>p.menu__p+ul.menu__ul>(li.menu__li>p.menu__p)*3)*3 -->
-        <div class = "menu">
-            <ul class = "menu__ul">
-                <li class = "menu__li">
-                    <p class = "menu__p">Menu</p>
-                    <div class = "menu__div menu__div--unshifted">
+        <ul class="menu__ul" style="display: block; position: initial;">
+            <li class="menu__li">
+                <p class="menu__p menu__p--first">&#9776;</p>
+                <ul class="menu__ul" style="left: 0; top: 100%; ">
+                    <li class="menu__li">
+                        <p class="menu__p">Sup 1</p>
                         <ul class="menu__ul">
                             <li class="menu__li">
-                                <p class="menu__p">Option 1</p>
-                                <div class = "menu__div">
-                                    <ul class="menu__ul">
-                                        <li class="menu__li">
-                                            <p class="menu__p">Option 1</p>
-                                        </li>
-                                        <li class="menu__li">
-                                            <p class="menu__p">Option 1</p>
-                                        </li>
-                                        <li class="menu__li">
-                                            <p class="menu__p">Option 1</p>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <p class="menu__p">Sub 1</p>
                             </li>
                             <li class="menu__li">
-                                <p class="menu__p">Option 1</p>
-                                <div class = "menu__div">
-                                    <ul class="menu__ul">
-                                        <li class="menu__li">
-                                            <p class="menu__p">Option 1</p>
-                                        </li>
-                                        <li class="menu__li">
-                                            <p class="menu__p">Option 1</p>
-                                        </li>
-                                        <li class="menu__li">
-                                            <p class="menu__p">Option 1</p>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <p class="menu__p">Sub 2</p>
                             </li>
                             <li class="menu__li">
-                                <p class="menu__p">Option 1</p>
-                                <div class = "menu__div">
-                                    <ul class="menu__ul">
-                                        <li class="menu__li">
-                                            <p class="menu__p">Option 1</p>
-                                        </li>
-                                        <li class="menu__li">
-                                            <p class="menu__p">Option 1</p>
-                                        </li>
-                                        <li class="menu__li">
-                                            <p class="menu__p">Option 1</p>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <p class="menu__p">Sub 3</p>
                             </li>
                         </ul>
-                    </div>
-                </li>
-            </ul>
-        </div>
+                    </li>
+                    <li class="menu__li">
+                        <p class="menu__p">Sup 2</p>
+                        <ul class="menu__ul">
+                            <li class="menu__li">
+                                <p class="menu__p">Sub 1</p>
+                            </li>
+                            <li class="menu__li">
+                                <p class="menu__p">Sub 2</p>
+                            </li>
+                            <li class="menu__li">
+                                <p class="menu__p">Sub 3</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu__li">
+                        <p class="menu__p">Sup 3</p>
+                        <ul class="menu__ul">
+                            <li class="menu__li">
+                                <p class="menu__p">Sub 1</p>
+                            </li>
+                            <li class="menu__li">
+                                <p class="menu__p">Sub 2</p>
+                            </li>
+                            <li class="menu__li">
+                                <p class="menu__p">Sub 3</p>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
         <div class="title">
             <h1 class="title__text">Snake Game</h1>
             <legend class="title__legend">By Edgar Trejo Avila</legend>
