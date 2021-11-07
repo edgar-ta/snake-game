@@ -73,9 +73,11 @@
 
 .title__text {
     margin: 0.25em;
+    text-align: center;
 }
 
 .title__legend {
     font-size: 0.5rem;
     font-style: italic;
+    text-align: center;
 }
