@@ -1,6 +1,14 @@
 :root {
     font-family: sans-serif;
-    --first-group-width: 10vw;
+    --block-side: 7vmin;
+    --board-n: 10;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    margin: 1vh 1vw;
+    height: 98vh;
 }
 
 .navbar {
@@ -8,6 +16,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
 }
 
 /* :START: MENU STYLING */
@@ -80,4 +95,28 @@
     font-size: 0.5rem;
     font-style: italic;
     text-align: center;
+}
+
+.board {
+    display: inline-grid;
+    position: relative;
+    grid-template: repeat(var(--board-n), var(--block-side)) / repeat(var(--board-n), var(--block-side));
+    gap: 0.5vw 0.5vh;
+    box-sizing: content-box;
+    padding: 0.5vw 0.5vh;
+    z-index: -1;
+}
+
+.board__start-btn {
+    position: absolute;
+    left: 35%;
+    top: 45%;
+    width: 30%;
+    height: 10%;
+    border: 1px solid #969696;
+    border-radius: 10px;
+}
+
+.board__block {
+    background-color: gray;
 }
