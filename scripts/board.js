@@ -4,7 +4,7 @@ export class Board extends HTMLDivElement {
      * by an entity (block)
      * @type {number[][]}
      */
-    freePositions;
+    freePositions = [];
 
 
     constructor() {
