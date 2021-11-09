@@ -39,7 +39,7 @@ body {
 
 .menu__p {
     margin: 0;
-    min-width: 10vw;
+    min-width: 12vw;
     padding: 0.25rem;
     padding-left: 0.75rem;
     position: relative;
@@ -109,12 +109,14 @@ body {
 
 .board__start-btn {
     position: absolute;
+    background-color: hsl(60deg, 100%, 90%);
     left: 35%;
     top: 45%;
     width: 30%;
     height: 10%;
     border: 1px solid #969696;
     border-radius: 10px;
+    font-size: 1.5rem;
 }
 
 .board__block {
