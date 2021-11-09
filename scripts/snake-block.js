@@ -1,4 +1,4 @@
-export class SnakeBlock extends HTMLDivElement {
+class SnakeBlock extends HTMLDivElement {
     /**
      * Integer that refers to the x the snake block occupies
      * in a board (1-indexed)
@@ -63,7 +63,7 @@ export class SnakeBlock extends HTMLDivElement {
     }
 }
 
-export class SnakeHead extends SnakeBlock {
+class SnakeHead extends SnakeBlock {
     constructor() {
         super();
     }
@@ -91,3 +91,5 @@ export class SnakeHead extends SnakeBlock {
         }
     }
 }
+
+export { SnakeBlock, SnakeHead }
