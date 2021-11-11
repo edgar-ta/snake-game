@@ -1,3 +1,9 @@
+/**
+ * Class that emulates the behavior of the parts of the snake in the game.
+ * 
+ * In order for the methods of positioning to work, the blocks should be
+ * contained in a div whose display is grid
+ */
 class SnakeBlock extends HTMLDivElement {
     /**
      * Integer that refers to the x the snake block occupies
@@ -26,9 +32,22 @@ class SnakeBlock extends HTMLDivElement {
 
     constructor() {
         super();
-        this.x = Number.parseInt(this.getAttribute("initial-x")) ?? 1;
-        this.y = Number.parseInt(this.getAttribute("initial-y")) ?? 1;
-        this.direction = Number.parseInt(this.getAttribute("direction")) ?? DOWN;
+        this.x = Number.parseInt(this.getFallbackAttribute("initial-x", "1"));
+        this.y = Number.parseInt(this.getFallbackAttribute("initial-y", "1"));
+        this.direction = Number.parseInt(this.getFallbackAttribute("direction", "0"));
+    }
+
+    /**
+     * Checks if the block has an attribute, if it does,
+     * returns it, if not, returns the fallback
+     * @param {string} qualifiedName Name of the attribute to get
+     * @param {string} fallbackValue Fallback value of that attribute
+     * @returns {string} Either the attribute or the fallback
+     */
+    getFallbackAttribute(qualifiedName, fallbackValue) {
+        if (this.hasAttribute(qualifiedName))
+        return this.getAttribute(qualifiedName);
+        return fallbackValue;
     }
 
     /**
@@ -63,6 +82,12 @@ class SnakeBlock extends HTMLDivElement {
     }
 }
 
+/**
+ * Class that emulates the behavior of the head of the snake.
+ * 
+ * It inherits from snake block and it adds the ability to advance
+ * (set its own x and y according to its direction)
+ */
 class SnakeHead extends SnakeBlock {
     constructor() {
         super();
