@@ -36,7 +36,7 @@ export class Board extends HTMLDivElement {
     occupyPosition(x, y) {
         let positionIndex = this.freePositions.findIndex([x, y]);
         if (positionIndex < 0) return;
-        this.freePositions = this.freePositions.slice(0, positionIndex) + this.freePositions.slice(positionIndex + 1);
+        this.freePositions = [...this.freePositions.slice(0, positionIndex), ...this.freePositions.slice(positionIndex + 1)];
     }
 
     /**
@@ -67,5 +67,16 @@ export class Board extends HTMLDivElement {
                 this.freePositions.push([i, j]);
             }
         }
+    }
+
+    /**
+     * Gets a random free position, that it then returns and removes from the array
+     * @returns {number[]} Disocuppied random position
+     */
+    disocuppyRandomPosition() {
+        let randomIndex = ~~(Math.random() * this.freePositions.length);
+        let randomPosition = this.freePositions[randomIndex];
+        this.freePositions = [...this.freePositions.slice(0, randomIndex), ...this.freePositions.slice(randomIndex + 1)];
+        return randomPosition;
     }
 }
