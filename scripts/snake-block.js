@@ -80,6 +80,24 @@ class SnakeBlock extends HTMLDivElement {
     setDirection(newDirection) {
         this.direction = newDirection;
     }
+
+    /**
+     * Moves to the position (x and y coordinates) of another block
+     * @param {SnakeBlock} block Block to get position
+     */
+    moveToBlock(block) {
+        this.setX(block.x);
+        this.setY(block.y);
+    }
+
+    /**
+     * Checks if a block has the same position (x and y) that this
+     * @param {SnakeBlock} block Block to check
+     * @return {boolean} If both blocks have the same coordinates
+     */
+    sameAs(block) {
+        return this.x == block.x && this.y == block.y;
+    }
 }
 
 /**
