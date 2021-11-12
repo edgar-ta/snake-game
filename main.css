@@ -122,3 +122,11 @@ body {
 .board__block {
     background-color: gray;
 }
+
+.snake-block {
+    background-color: greenyellow;
+}
+
+.snake-head {
+    background-color: green;
+}

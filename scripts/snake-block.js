@@ -30,11 +30,20 @@ class SnakeBlock extends HTMLDivElement {
     static DOWN = 2;
     static LEFT = 3;
 
-    constructor() {
+    /**
+     * Passes the values and sets its styling to work
+     * within a grid div
+     * @constructor Simple constructor
+     * @param {number} initialX Initial coordinate of the block
+     * @param {number} initialY Initial coordinate of the block
+     * @param {number} initialDirection Initial direction of the block
+     */
+    constructor(initialX, initialY, initialDirection) {
         super();
-        this.x = Number.parseInt(this.getFallbackAttribute("initial-x", "1"));
-        this.y = Number.parseInt(this.getFallbackAttribute("initial-y", "1"));
-        this.direction = Number.parseInt(this.getFallbackAttribute("direction", "0"));
+        this.setX(initialX);
+        this.setY(initialY);
+        this.setDirection(initialDirection);
+        this.setAttribute("class", "snake-block");
     }
 
     /**
@@ -57,7 +66,7 @@ class SnakeBlock extends HTMLDivElement {
      */
     setX(newX) {
         this.x = newX;
-        this.style.gridColumn = `${x}`;
+        this.style.gridColumn = `${newX}`;
     }
 
     /**
@@ -67,7 +76,7 @@ class SnakeBlock extends HTMLDivElement {
      */
     setY(newY) {
         this.y = newY;
-        this.style.gridRow = `${y}`;
+        this.style.gridRow = `${newY}`;
     }
 
     /**
@@ -107,8 +116,16 @@ class SnakeBlock extends HTMLDivElement {
  * (set its own x and y according to its direction)
  */
 class SnakeHead extends SnakeBlock {
-    constructor() {
-        super();
+    /**
+     * Passes the values and sets its class
+     * @constructor Self-explanatory
+     * @param {number} initialX Initial coordinate of the head
+     * @param {number} initialY Initial coordinate of the head
+     * @param {number} initialDirection Self-explanatory
+     */
+    constructor(initialX, initialY, initialDirection) {
+        super(initialX, initialY, initialDirection);
+        this.setAttribute("class", "snake-head");
     }
 
     /**

@@ -36,13 +36,13 @@ export class Snake {
      * from the beginning, all blocks end up with the same position)
      */
     advance() {
-        this.head.advance();
-        for (let i = this.blocks.length - 1; i > 1; i--) {
+        for (let i = this.blocks.length - 1; i > 0; i--) {
             let currentBlock = this.blocks[i];
             let nextBlock = this.blocks[i - 1];
             currentBlock.moveToBlock(nextBlock);
         }
         this.blocks[0].moveToBlock(this.head);
+        this.head.advance();
     }
 
     /**
