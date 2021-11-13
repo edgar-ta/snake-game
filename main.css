@@ -130,3 +130,7 @@ body {
 .snake-head {
     background-color: green;
 }
+
+.apple {
+    background-color: red;
+}

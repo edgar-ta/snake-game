@@ -131,12 +131,33 @@ class Apple extends HTMLDivElement {
      * @param {number} maxPoints Max amount of points the snake will get for capturing the apple
      * @param {number} timespan Timespan the snake will have to capture the apple (miliseconds)
      */
-    constructor(x=0, y=0, maxPoints=10, timespan=1000) {
+    constructor(x=1, y=1, maxPoints=10, timespan=1000) {
         super();
-        this.x = x;
-        this.y = y;
+        this.setX(x);
+        this.setY(y);
         this.maxPoints = maxPoints;
         this.alarm = new Alarm(() => this.disable(), timespan);
+        this.setAttribute("class", "apple")
+    }
+
+    /**
+     * Sets the position in the class and styling
+     * of the apple
+     * @param {number} newX X coordinate of the apple
+     */
+    setX(newX) {
+        this.x = newX;
+        this.style.gridColumn = `${newX}`;
+    }
+
+    /**
+     * Sets the position in the class and styling
+     * of the apple
+     * @param {number} newY Y coordinate of the apple
+     */
+    setY(newY) {
+        this.y = newY;
+        this.style.gridRow = `${newY}`;
     }
 
     /**
@@ -163,7 +184,6 @@ class Apple extends HTMLDivElement {
      */
     disable() {
         this.remove();
-        this.alarm.clear();
     }
 }
 

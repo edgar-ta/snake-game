@@ -24,9 +24,9 @@ export class Board extends HTMLDivElement {
      * @constructor 
      * @param {number} n Size of the board
      */
-    constructor(n = Number.parseInt(this.getAttribute("n"))) {
+    constructor() {
         super();
-        this.n = n;
+        this.n = Number.parseInt(this.getAttribute("n"));
         this.setAttribute("class", "board");
         this.populateBoard();
     }
@@ -77,7 +77,7 @@ export class Board extends HTMLDivElement {
     populateBoard() {
         this.querySelectorAll(".block").forEach(block => block.remove());
         for (let i = 0; i < this.n; i++) {
-            for (let j = 0; j < n; j++) {
+            for (let j = 0; j < this.n; j++) {
                 let block = document.createElement("div");
                 block.setAttribute("class", "board__block");
                 this.appendChild(block);

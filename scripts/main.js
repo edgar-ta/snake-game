@@ -6,6 +6,13 @@ import { Apple } from "./apple.js";
 customElements.define("board-div", Board, {"extends": "div"});
 customElements.define("snake-block", SnakeBlock, {"extends": "div"});
 customElements.define("snake-head", SnakeHead, {"extends": "div"});
+customElements.define("apple-div", Apple, {"extends": "div"});
+
+/**
+ * Number of frames per second of the game animation
+ * @type {number}
+ */
+let frames = 2;
 
 /**
  * Snake that the player will use to play
@@ -55,8 +62,13 @@ function onStart() {
         new SnakeBlock(4, 2, SnakeBlock.DOWN)
     );
     apple = generateApple();
-    gameIndex = setInterval(advance, 2000);
+    gameIndex = setInterval(advance, 1000 / frames);
     isRunning = true;
+    
+    snake.blocks.forEach(block => board.appendChild(block));
+    board.appendChild(snake.head);
+
+    document.querySelector("#startBtn").remove();
 }
 
 /**
@@ -69,7 +81,7 @@ function togglePause() {
         clearInterval(gameIndex);
         isRunning = false;
     } else {
-        gameIndex = setInterval(advance, 2000);
+        gameIndex = setInterval(advance, 1000 / frames);
         isRunning = true;
     }
 }
@@ -92,7 +104,10 @@ function onAppleCapture() {
     points += apple.capture();
     updatePoints();
     apple = generateApple();
-    snake.addBlock();
+
+    let block = snake.newBlock();
+    board.appendChild(block);
+    snake.blocks.push(block);
 }
 
 /**
@@ -121,13 +136,17 @@ function onChangeDirection(e) {
 
 /**
  * Takes the some random free positions from the board and makes an
- * apple from those
+ * apple from those.
+ * 
+ * Also, appends the apple to the board.
  * @todo Get custom apple by menu options
  * @returns {Apple} Apple in free position of the board
  */
 function generateApple() {
-    let [ x, y ] = board.disocuppyPosition;
-    return new Apple(x, y, 200, 1000);
+    let [ x, y ] = board.disocuppyRandomPosition();
+    let apple = new Apple(x, y, 200, 4 * 1000 / frames);
+    board.appendChild(apple)
+    return apple;
 }
 
 /**
@@ -161,5 +180,5 @@ function advance() {
 }
 
 document.querySelector("#startBtn").addEventListener("click", onStart);
-document.querySelector("pauseBtn").addEventListener("click", togglePause);
+document.querySelector("#pauseBtn").addEventListener("click", togglePause);
 document.addEventListener("keydown", onChangeDirection);

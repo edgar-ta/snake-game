@@ -55,22 +55,14 @@ export class Snake {
      */
     isBitingItself() {
         return this.blocks.some(block => this.head.sameAs(block));
-        // let allBlocks = [...this.blocks, this.head];
-        // for (let i = 0; i < allBlocks.length; i++) {
-        //     let currentBlock = allBlocks[i];
-        //     for (let j = i + 1; j<allBlocks.length; j++) {
-        //         let nextBlock = allBlocks[j];
-        //         if (currentBlock.sameAs(nextBlock)) return true;
-        //     }
-        // }
-        // return false;
     }
 
     /**
-     * Generates a new block and adds it to the snake
+     * Generates a new block that's supposed to be added to the snake
+     * @returns {SnakeBlock} New snake block for the snake
      */
-    addBlock() {
+    newBlock() {
         let lastBlock = this.blocks[this.blocks.length - 1];
-        this.blocks.push(new SnakeBlock(lastBlock.x, lastBlock.y, lastBlock.direction));
+        return new SnakeBlock(lastBlock.x, lastBlock.y, lastBlock.direction);
     }
 }
