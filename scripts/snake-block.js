@@ -95,8 +95,9 @@ class SnakeBlock extends HTMLDivElement {
      * @param {SnakeBlock} block Block to get position
      */
     moveToBlock(block) {
-        this.setX(block.x);
-        this.setY(block.y);
+        if (block.x != this.x) this.setX(block.x);
+        if (block.y != this.y) this.setY(block.y);
+        this.setDirection(block.direction);
     }
 
     /**

@@ -65,4 +65,12 @@ export class Snake {
         // }
         // return false;
     }
+
+    /**
+     * Generates a new block and adds it to the snake
+     */
+    addBlock() {
+        let lastBlock = this.blocks[this.blocks.length - 1];
+        this.blocks.push(new SnakeBlock(lastBlock.x, lastBlock.y, lastBlock.direction));
+    }
 }
