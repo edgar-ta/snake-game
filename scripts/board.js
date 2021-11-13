@@ -6,11 +6,22 @@ export class Board extends HTMLDivElement {
      */
     freePositions = [];
 
+    /**
+     * Dimension of the board
+     * @type {number}
+     */
+    n;
 
-    constructor() {
+
+    constructor(n) {
         super();
+        this.n = n;
         this.setAttribute("class", "board");
         this.populateBoard();
+    }
+
+    constructor() {
+        this(Number.parseInt(this.getAttribute("n")));
     }
 
     /**
@@ -57,9 +68,8 @@ export class Board extends HTMLDivElement {
      * Also, it populates the free positions of the board
      */
     populateBoard() {
-        let n = Number.parseInt(this.getAttribute("n"));
         this.querySelectorAll(".block").forEach(block => block.remove());
-        for (let i = 0; i < n; i++) {
+        for (let i = 0; i < this.n; i++) {
             for (let j = 0; j < n; j++) {
                 let block = document.createElement("div");
                 block.setAttribute("class", "board__block");

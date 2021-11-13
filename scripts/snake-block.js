@@ -151,6 +151,26 @@ class SnakeHead extends SnakeBlock {
                 this.setX(this.x - 1);
         }
     }
+
+    /**
+     * If the new direction is valid, then sets the head to it
+     * @param {number} newDirection New direction to set the head to
+     */
+    setDirection(newDirection) {
+        if (this.isValidDirection(newDirection)) 
+        super.setDirection(newDirection);
+    }
+
+    /**
+     * Checks the new direction to set the head to and,
+     * if its not the contrary or the same direction,
+     * allows it to set it
+     * @param {number} direction New direction to set the head
+     * @returns {boolean} Whether the snake should change its direction or not
+     */
+    isValidDirection(direction) {
+        return this.direction != direction && Math.abs(this.direction - direction) != 2;
+    }
 }
 
 export { SnakeBlock, SnakeHead }
