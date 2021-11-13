@@ -65,4 +65,13 @@ export class Snake {
         let lastBlock = this.blocks[this.blocks.length - 1];
         return new SnakeBlock(lastBlock.x, lastBlock.y, lastBlock.direction);
     }
+
+    /**
+     * Executes a function upon the blocks and head of the snake
+     * @param {any} fun Function to execute on the blocks (takes a block as parameter and returns void)
+     */
+    execOnAll(fun) {
+        this.blocks.forEach(block => fun(block));
+        fun(this.head);
+    }
 }

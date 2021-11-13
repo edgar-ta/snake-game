@@ -3,16 +3,18 @@ import { SnakeBlock, SnakeHead } from "./snake-block.js";
 import { Snake } from "./snake.js";
 import { Apple } from "./apple.js";
 
-customElements.define("board-div", Board, {"extends": "div"});
-customElements.define("snake-block", SnakeBlock, {"extends": "div"});
-customElements.define("snake-head", SnakeHead, {"extends": "div"});
-customElements.define("apple-div", Apple, {"extends": "div"});
+customElements.define("board-div", Board, { "extends": "div" });
+customElements.define("snake-block", SnakeBlock, { "extends": "div" });
+customElements.define("snake-head", SnakeHead, { "extends": "div" });
+customElements.define("apple-div", Apple, { "extends": "div" });
 
 /**
  * Number of frames per second of the game animation
  * @type {number}
  */
 let frames = 2;
+
+
 
 /**
  * Snake that the player will use to play
@@ -31,6 +33,7 @@ let board = document.querySelector("#board");
  * @type {Apple}
  */
 let apple;
+
 
 
 /**
@@ -57,18 +60,20 @@ let gameIndex = -1;
  */
 function onStart() {
     snake = new Snake(
-        new SnakeHead(4, 4, SnakeBlock.DOWN), 
-        new SnakeBlock(4, 3, SnakeBlock.DOWN), 
+        new SnakeHead(4, 4, SnakeBlock.DOWN),
+        new SnakeBlock(4, 3, SnakeBlock.DOWN),
         new SnakeBlock(4, 2, SnakeBlock.DOWN)
     );
     apple = generateApple();
     gameIndex = setInterval(advance, 1000 / frames);
     isRunning = true;
-    
-    snake.blocks.forEach(block => board.appendChild(block));
-    board.appendChild(snake.head);
+
+    // debugger
+    snake.execOnAll((block) => board.appendChild(block));
+    snake.execOnAll((block) => board.occupyPosition(block.x, block.y));
 
     document.querySelector("#startBtn").remove();
+    document.querySelector("#pauseBtn").setAttribute("disabled", "false");
 }
 
 /**
@@ -107,6 +112,11 @@ function onAppleCapture() {
 
     let block = snake.newBlock();
     board.appendChild(block);
+
+    // the position of the tail is disoccupied, but since
+    // it now contains another block (this block has the position of the tail),
+    // it is necessary to re-occupy that position
+    board.occupyPosition(block.x, block.y);
     snake.blocks.push(block);
 }
 
@@ -127,9 +137,9 @@ function onAppleMissed() {
  */
 function onChangeDirection(e) {
     switch (e.key) {
-        case "w": snake.head.setDirection(SnakeBlock.UP);
-        case "a": snake.head.setDirection(SnakeBlock.LEFT);
-        case "s": snake.head.setDirection(SnakeBlock.DOWN);
+        case "w": snake.head.setDirection(SnakeBlock.UP); break;
+        case "a": snake.head.setDirection(SnakeBlock.LEFT); break;
+        case "s": snake.head.setDirection(SnakeBlock.DOWN); break;
         case "d": snake.head.setDirection(SnakeBlock.RIGHT);
     }
 }
@@ -143,7 +153,7 @@ function onChangeDirection(e) {
  * @returns {Apple} Apple in free position of the board
  */
 function generateApple() {
-    let [ x, y ] = board.disocuppyRandomPosition();
+    let [x, y] = board.getRandomPosition();
     let apple = new Apple(x, y, 200, 4 * 1000 / frames);
     board.appendChild(apple)
     return apple;
@@ -173,9 +183,23 @@ function updatePoints() {
  * @todo (Dis)ocuppy positions as the snake advances
  */
 function advance() {
+    // you only need to manipulate the position of
+    // the edges of the snake. since the tail moves
+    // to a position already ocuppied, you only need
+    // to free its previous position.
+    // the head moves to a new position non-ocuppied,
+    // so i need to ocuppy it
+
+    let tail = snake.blocks[snake.blocks.length - 1];
+    let tailX = tail.x;
+    let tailY = tail.y;
+
     snake.advance();
+    board.disocuppyPosition(tailX, tailY);
+    board.occupyPosition(snake.head.x, snake.head.y);
+
     if (snake.isBitingItself() || isOutOfBoundaries()) onLose();
-    if (apple.isConsumed) onAppleMissed();
+    if (apple.isConsumed()) onAppleMissed();
     if (snake.head.sameAs(apple)) onAppleCapture();
 }
 

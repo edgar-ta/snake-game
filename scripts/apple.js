@@ -37,7 +37,7 @@ class Alarm {
      * If the alarm has already been executed
      * @type {boolean}
      */
-    consumed;
+    consumed = false;
 
     /**
      * Simple constructor
@@ -46,10 +46,9 @@ class Alarm {
      * @param {number} timeout Time (from now; in ms) it will take for the alarm to fire
      * @param {boolean} set Whether or not to start running the alarm when created (true by default)
      */
-    constructor(fun, timeout, set=true) {
+    constructor(fun, timeout, set = true) {
         this.fun = fun;
         this.timeout = timeout;
-        this.consumed = false;
 
         let now = Date.now();
 
@@ -131,7 +130,7 @@ class Apple extends HTMLDivElement {
      * @param {number} maxPoints Max amount of points the snake will get for capturing the apple
      * @param {number} timespan Timespan the snake will have to capture the apple (miliseconds)
      */
-    constructor(x=1, y=1, maxPoints=10, timespan=1000) {
+    constructor(x = 1, y = 1, maxPoints = 10, timespan = 1000) {
         super();
         this.setX(x);
         this.setY(y);
@@ -184,6 +183,7 @@ class Apple extends HTMLDivElement {
      */
     disable() {
         this.remove();
+        this.alarm.clear();
     }
 }
 
