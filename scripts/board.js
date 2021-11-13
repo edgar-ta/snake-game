@@ -1,3 +1,9 @@
+/**
+ * Class featuring control methods for the positions of a snake
+ * 
+ * The board being size `n` means that it's `n` blocks (divs) tall
+ * and wide, containing then `n`^2 blocks
+ */
 export class Board extends HTMLDivElement {
     /**
      * The positions that are still not occupied
@@ -13,15 +19,16 @@ export class Board extends HTMLDivElement {
     n;
 
 
-    constructor(n) {
+    /**
+     * Passes the size, sets its correspondant class and populates the board
+     * @constructor 
+     * @param {number} n Size of the board
+     */
+    constructor(n = Number.parseInt(this.getAttribute("n"))) {
         super();
         this.n = n;
         this.setAttribute("class", "board");
         this.populateBoard();
-    }
-
-    constructor() {
-        this(Number.parseInt(this.getAttribute("n")));
     }
 
     /**

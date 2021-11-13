@@ -151,6 +151,7 @@ function updatePoints() {
 /**
  * Makes the snake move; checks for any events that could update
  * the points or make the game end
+ * @todo (Dis)ocuppy positions as the snake advances
  */
 function advance() {
     snake.advance();
