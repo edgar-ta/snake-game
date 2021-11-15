@@ -19,6 +19,13 @@ const getRandomElement = (arr) => {
 }
 
 /**
+ * Rounds a number to the nearest multiple of a half
+ * @param {number} num Some numeric value
+ * @returns The value, rounded so that `{x}` is either 0.5 or 0
+ */
+const roundToHalfs = (num) => Math.round(2 * num) / 2;
+
+/**
  * Number of frames per second of the game animation
  * @type {number}
  */
@@ -74,8 +81,19 @@ function onStart() {
     gameIndex = setInterval(advance, 1000 / frames);
     isRunning = true;
 
+    // this is getting kinda tricky, I should create another
+    // function to help set everything in place
     document.querySelector("#startBtn").remove();
-    document.querySelector("#pauseBtn").removeAttribute("disabled");
+
+    let 
+    pauseBtn = document.querySelector("#pauseBtn"), 
+    restartBtn = document.querySelector("#restartBtn");
+
+    pauseBtn.removeAttribute("disabled");
+    restartBtn.removeAttribute("disabled");
+
+    pauseBtn.classList.remove("control-btn--disabled");
+    restartBtn.classList.remove("control-btn--disabled");
 }
 
 /**
@@ -197,7 +215,9 @@ function isOutOfBoundaries() {
  * Lets the user know how many points they've got so far
  */
 function updatePoints() {
-    document.querySelector("#points").textContent = points;
+    document.querySelector("#points").textContent = roundToHalfs(points);
+    // 1 extra for the head
+    document.querySelector("#blocksLong").textContent = snake.blocks.length + 1;
 }
 
 /**

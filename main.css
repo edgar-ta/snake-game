@@ -105,6 +105,8 @@ body {
     box-sizing: content-box;
     padding: 0.5vw 0.5vh;
     z-index: -1;
+    grid-auto-rows: 0;
+    grid-auto-columns: 0;
 }
 
 .board__start-btn {
@@ -133,4 +135,49 @@ body {
 
 .apple {
     background-color: red;
+}
+
+.control-panel {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.control-btn {
+    --bg-hue: 120;
+    color: white;
+    background-color: hsl(var(--bg-hue), 100%, 50%);
+}
+
+.control-btn--restart {
+    --bg-hue: 0;
+}
+
+.control-btn--disabled {
+    background-color: hsl(var(--bg-hue), 100%, 80%);
+}
+
+.direction-panel {
+    display: grid;
+    grid-template: repeat(3, 3vmin) / repeat(3, 3vmin);
+}
+
+.direction-btn {
+    grid-row: var(--grid-row, 1);
+    grid-column: var(--grid-column, 2);
+}
+
+.direction-btn--right {
+    --grid-row: 2;
+    --grid-column: 3;
+}
+
+.direction-btn--down {
+    --grid-row: 3;
+    --grid-column: 2
+}
+
+.direction-btn--left {
+    --grid-row: 2;
+    --grid-column: 1;
 }

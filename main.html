@@ -69,9 +69,24 @@
         <div is="board-div" n="10" id="board">
             <button class="board__start-btn" id="startBtn">></button>            
         </div>
-        <label for="points">Points:</label>
-        <output id="points">0</output>
-        <button disabled="disabled" id="pauseBtn">Pause</button>
+        <div class="control-panel">
+            <label>
+                Points:
+                <output id="points">0</output>
+            </label>
+            <label>
+                Blocks Long:
+                <output id="blocksLong">0</output>
+            </label>
+            <button disabled id="pauseBtn" class="control-btn control-btn--disabled">Pause</button>
+            <button disabled id="restartBtn" class="control-btn control-btn--restart control-btn--disabled">Restart</button>
+            <div class="direction-panel">
+                <button class="direction-btn"></button>
+                <button class="direction-btn direction-btn--right"></button>
+                <button class="direction-btn direction-btn--down"></button>
+                <button class="direction-btn direction-btn--left"></button>
+            </div>
+        </div>
     </div>
 </body>
 </html>
