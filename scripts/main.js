@@ -9,6 +9,16 @@ customElements.define("snake-head", SnakeHead, { "extends": "div" });
 customElements.define("apple-div", Apple, { "extends": "div" });
 
 /**
+ * Gets a random element from an array
+ * @param {any[]} arr Array to get an element from
+ * @returns {any} Random element
+ */
+const getRandomElement = (arr) => {
+    let randIndex = ~~(Math.random() * arr.length);
+    return arr[randIndex];
+}
+
+/**
  * Number of frames per second of the game animation
  * @type {number}
  */
@@ -59,21 +69,13 @@ let gameIndex = -1;
  * @todo Get custom SnakeBlocks through menu
  */
 function onStart() {
-    snake = new Snake(
-        new SnakeHead(4, 4, SnakeBlock.DOWN),
-        new SnakeBlock(4, 3, SnakeBlock.DOWN),
-        new SnakeBlock(4, 2, SnakeBlock.DOWN)
-    );
+    snake = generateSnake();
     apple = generateApple();
     gameIndex = setInterval(advance, 1000 / frames);
     isRunning = true;
 
-    // debugger
-    snake.execOnAll((block) => board.appendChild(block));
-    snake.execOnAll((block) => board.occupyPosition(block.x, block.y));
-
     document.querySelector("#startBtn").remove();
-    document.querySelector("#pauseBtn").setAttribute("disabled", "false");
+    document.querySelector("#pauseBtn").removeAttribute("disabled");
 }
 
 /**
@@ -112,11 +114,6 @@ function onAppleCapture() {
 
     let block = snake.newBlock();
     board.appendChild(block);
-
-    // the position of the tail is disoccupied, but since
-    // it now contains another block (this block has the position of the tail),
-    // it is necessary to re-occupy that position
-    board.occupyPosition(block.x, block.y);
     snake.blocks.push(block);
 }
 
@@ -132,6 +129,7 @@ function onAppleMissed() {
 /**
  * Changes the direction of the snake when the user presses a key.
  * 
+ * ---
  * It responds to w, a, s, d as up, left, down, right, respectively
  * @param {KeyboardEven} e Event that triggers the function
  */
@@ -153,10 +151,35 @@ function onChangeDirection(e) {
  * @returns {Apple} Apple in free position of the board
  */
 function generateApple() {
-    let [x, y] = board.getRandomPosition();
+    let [x, y] = getRandomElement(board.substractPositions(snake.getPositions()));
     let apple = new Apple(x, y, 200, 4 * 1000 / frames);
-    board.appendChild(apple)
+    board.appendChild(apple);
     return apple;
+}
+
+/**
+ * Generates a snake with automatically generated blocks
+ * 
+ * ---
+ * The snake is in vertical position and goes down.
+ * If the number of blocks is too large that it doesn't fit
+ * the board, then just stops adding them.
+ * 
+ * Also, it appends all snake blocks (including head) into the
+ * board
+ * @param {number} initialX Initial coordinate of the snake's head
+ * @param {number} initialY Initial coordinate of the snake's head
+ * @param {number} initialN Initial number of blocks (besides the head) the snake should have
+ * @returns {Snake} Snake of the characteristics given
+ */
+function generateSnake(initialX = 4, initialY = 4, initialN = 2) {
+    let snake = new Snake(new SnakeHead(initialX, initialY, SnakeBlock.DOWN));
+    for (let i = 1; i <= initialN; i++) {
+        if (initialY - i < 1) break;
+        snake.blocks.push(new SnakeBlock(initialX, initialY - i, SnakeBlock.DOWN));
+    }
+    snake.execOnAll(block => board.appendChild(block));
+    return snake;
 }
 
 /**
@@ -180,24 +203,9 @@ function updatePoints() {
 /**
  * Makes the snake move; checks for any events that could update
  * the points or make the game end
- * @todo (Dis)ocuppy positions as the snake advances
  */
 function advance() {
-    // you only need to manipulate the position of
-    // the edges of the snake. since the tail moves
-    // to a position already ocuppied, you only need
-    // to free its previous position.
-    // the head moves to a new position non-ocuppied,
-    // so i need to ocuppy it
-
-    let tail = snake.blocks[snake.blocks.length - 1];
-    let tailX = tail.x;
-    let tailY = tail.y;
-
     snake.advance();
-    board.disocuppyPosition(tailX, tailY);
-    board.occupyPosition(snake.head.x, snake.head.y);
-
     if (snake.isBitingItself() || isOutOfBoundaries()) onLose();
     if (apple.isConsumed()) onAppleMissed();
     if (snake.head.sameAs(apple)) onAppleCapture();

@@ -23,7 +23,7 @@ export class Snake {
      * @param {SnakeHead} head Head of the snake
      * @param  {...SnakeBlock} blocks Initial blocks of the array
      */
-    constructor(head, ...blocks) {
+    constructor(head, blocks = []) {
         this.head = head;
         this.blocks = blocks;
     }
@@ -48,6 +48,7 @@ export class Snake {
     /**
      * Checks if the head has the same position as any other block
      * 
+     * ---
      * At the very beginning, I wanted to make it so that it checks
      * that all blocks have different positions.
      * I will let that code commented, since I have already written it
@@ -73,5 +74,15 @@ export class Snake {
     execOnAll(fun) {
         this.blocks.forEach(block => fun(block));
         fun(this.head);
+    }
+
+    /**
+     * Gets an array of the positions of all blocks of the snake (including the head)
+     * @returns {number[][]} Positions of all blocks
+     */
+    getPositions() {
+        let res = [];
+        this.execOnAll(block => res.push([block.x, block.y]));
+        return res;
     }
 }

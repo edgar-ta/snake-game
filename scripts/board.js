@@ -10,7 +10,7 @@ export class Board extends HTMLDivElement {
      * by an entity (block)
      * @type {number[][]}
      */
-    freePositions = [];
+    positions = [];
 
     /**
      * Dimension of the board
@@ -30,45 +30,7 @@ export class Board extends HTMLDivElement {
         this.setAttribute("class", "board");
         this.populateBoard();
     }
-
-    /**
-     * Checks if the position with the parameters given
-     * is in the `freePositions` array
-     * @param {number} x Self-explanatory
-     * @param {number} y Self-explanatory
-     * @returns If the position `[x, y]` is free
-     */
-    isFree(x, y) {
-        return this.freePositions.includes([x, y]);
-    }
-
-    /**
-     * Deletes the position `[x, y]` from the
-     * `freePositions` array.
-     * 
-     * If the position is not in the array, then 
-     * it does nothing
-     * @param {number} x Self-explanatory
-     * @param {number} y Self-explanatory
-     */
-    occupyPosition(x, y) {
-        let positionIndex = this.freePositions.indexOf([x, y]);
-        if (positionIndex < 0) return;
-        this.freePositions = [...this.freePositions.slice(0, positionIndex), ...this.freePositions.slice(positionIndex + 1)];
-    }
-
-    /**
-     * Pushes the position `[x, y]` into the `freePositions` array.
-     * 
-     * If the position is already there, then it does nothing.
-     * @param {number} x Self-explanatory
-     * @param {number} y Self-explanatory
-     */
-    disocuppyPosition(x, y) {
-        if (this.isFree(x, y)) return;
-        this.freePositions.push([x, y]);
-    }
-
+    
     /**
      * Removes all blocks from the board and adds n^2 new ones.
      * 
@@ -81,18 +43,28 @@ export class Board extends HTMLDivElement {
                 let block = document.createElement("div");
                 block.setAttribute("class", "board__block");
                 this.appendChild(block);
-                this.freePositions.push([i, j]);
+                this.positions.push([i, j]);
             }
         }
     }
 
     /**
-     * Gets a random position from the free ones
-     * @returns {number[]} Free random position
+     * Takes the passed positions and returns the positions
+     * of the board that are not any of those
+     * @param {number[][]} toSubstract Array of positions to compare to
+     * @returns {number[][]} Array of the positions of the board, except those in the positions passed
      */
-    getRandomPosition() {
-        let randomIndex = ~~(Math.random() * this.freePositions.length);
-        let randomPosition = this.freePositions[randomIndex];
-        return randomPosition;
+    substractPositions(toSubstract) {
+        let res = [...this.positions];
+        for (let sPos of toSubstract) {
+            let posIndex = res.findIndex(bPos => {
+                let [pX, pY] = bPos;
+                let [sX, sY] = sPos;
+                return pX == sX && pY == sY;
+            });
+            if (posIndex > -1) 
+            res.splice(posIndex, 1);
+        }
+        return res;
     }
 }
