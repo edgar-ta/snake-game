@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- viewBox= -strokeWidth/2 -strokeWidth/2 300+strokeWidth 300+strokeWidth -->
+<svg viewBox="-8 -8 316 316" xmlns="http://www.w3.org/2000/svg">
+    <!-- head -->
+    <path d="
+    M 250 0
+    a 50 50 0 0 1 50 50
+    v 200
+    a 50 50 0 0 1 -50 50
+    q -50 0 -100 -25
+    l -125 -62.5
+    q -25 -12.5 -25 -37.5
+    v -50
+    q 0 -25 25 -37.5
+    l 125 -62.5
+    q 50 -25 100 -25
+    z
+    " fill="green" stroke="orange" stroke-width="16" stroke-linejoin="16" />
+
+    <!-- nostrils -->
+    <circle cx="25" cy="125" r="12.5"/>
+    <circle cx="25" cy="175" r="12.5"/>
+
+    <!-- eyes -->
+    <!-- :upper: -->
+    <path d="
+    M 150 50
+    q -6.25 43.75 -50 50
+    q 31.25 -18.75 50 -50
+    " />
+
+    <!-- :lower: -->
+    <path d="
+    M 150 250
+    q -6.25 -43.75 -50 -50
+    q 31.25 18.75 50 50
+    " />
+</svg>
