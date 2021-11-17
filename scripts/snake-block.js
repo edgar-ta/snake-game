@@ -44,6 +44,26 @@ class SnakeBlock extends HTMLDivElement {
         this.setY(initialY);
         this.setDirection(initialDirection);
         this.setAttribute("class", "snake-block");
+        this.innerHTML = `
+        <svg viewBox="-8 -8 316 316" xmlns="http://www.w3.org/2000/svg">
+            <path d="
+            M 0 100
+            v 125
+            q 0 25 50 50
+            q 50 25 75 25
+            h 50
+            q 25 0 75 -25
+            q 50 -25 50 -50
+            v -150
+            q 0 -25 -50 -50
+            q -50 -25 -75 -25
+            h -50
+            q -25 0 -75 25
+            q -50 25 -50 50
+            z
+            " fill="green" stroke="orange" stroke-width="16" stroke-linejoin="round" />
+        </svg>
+        `;
     }
 
     /**
@@ -55,7 +75,7 @@ class SnakeBlock extends HTMLDivElement {
      */
     getFallbackAttribute(qualifiedName, fallbackValue) {
         if (this.hasAttribute(qualifiedName))
-        return this.getAttribute(qualifiedName);
+            return this.getAttribute(qualifiedName);
         return fallbackValue;
     }
 
@@ -88,6 +108,8 @@ class SnakeBlock extends HTMLDivElement {
      */
     setDirection(newDirection) {
         this.direction = newDirection;
+        // SVGS are facing left, that's why I need to calculate respect to that direction
+        this.style.transform = `rotate(${(newDirection - SnakeBlock.LEFT) * 90}deg)`;
     }
 
     /**
@@ -127,6 +149,39 @@ class SnakeHead extends SnakeBlock {
     constructor(initialX, initialY, initialDirection) {
         super(initialX, initialY, initialDirection);
         this.setAttribute("class", "snake-head");
+        this.innerHTML = `
+        <svg viewBox="-8 -8 316 316" xmlns="http://www.w3.org/2000/svg">
+            <path d="
+            M 250 0
+            a 50 50 0 0 1 50 50
+            v 200
+            a 50 50 0 0 1 -50 50
+            q -50 0 -100 -25
+            l -125 -62.5
+            q -25 -12.5 -25 -37.5
+            v -50
+            q 0 -25 25 -37.5
+            l 125 -62.5
+            q 50 -25 100 -25
+            z
+            " fill="green" stroke="orange" stroke-width="16" stroke-linejoin="16" />
+
+            <circle cx="25" cy="125" r="12.5"/>
+            <circle cx="25" cy="175" r="12.5"/>
+
+            <path d="
+            M 150 50
+            q -6.25 43.75 -50 50
+            q 31.25 -18.75 50 -50
+            " />
+
+            <path d="
+            M 150 250
+            q -6.25 -43.75 -50 -50
+            q 31.25 18.75 50 50
+            " />
+        </svg>
+        `;
     }
 
     /**
@@ -138,15 +193,15 @@ class SnakeHead extends SnakeBlock {
             case SnakeBlock.UP:
                 this.setY(this.y - 1);
                 break;
-            
+
             case SnakeBlock.RIGHT:
                 this.setX(this.x + 1);
                 break;
-            
+
             case SnakeBlock.DOWN:
                 this.setY(this.y + 1);
                 break;
-            
+
             default:
                 this.setX(this.x - 1);
         }
@@ -157,8 +212,8 @@ class SnakeHead extends SnakeBlock {
      * @param {number} newDirection New direction to set the head to
      */
     setDirection(newDirection) {
-        if (this.isValidDirection(newDirection)) 
-        super.setDirection(newDirection);
+        if (this.isValidDirection(newDirection))
+            super.setDirection(newDirection);
     }
 
     /**

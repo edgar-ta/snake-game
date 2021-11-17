@@ -137,6 +137,11 @@ class Apple extends HTMLDivElement {
         this.maxPoints = maxPoints;
         this.alarm = new Alarm(() => this.disable(), timespan);
         this.setAttribute("class", "apple")
+        this.innerHTML = `
+        <svg viewBox="-8 -8 216 216" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="100" cy="100" r="100" fill="red" stroke="orange" stroke-width="16" />
+        </svg>
+        `;
     }
 
     /**

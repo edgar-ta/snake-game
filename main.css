@@ -2,6 +2,7 @@
     font-family: sans-serif;
     --block-side: 7vmin;
     --board-n: 10;
+    --block-bg: gray;
 }
 
 body {
@@ -121,20 +122,13 @@ body {
     font-size: 1.5rem;
 }
 
-.board__block {
-    background-color: gray;
+.board__block, .apple {
+    background-color: var(--block-bg);
 }
 
-.snake-block {
-    background-color: greenyellow;
-}
-
-.snake-head {
-    background-color: green;
-}
-
-.apple {
-    background-color: red;
+.snake-block, .snake-head {
+    background-color: var(--block-bg);
+    transition: translate ease;
 }
 
 .control-panel {
