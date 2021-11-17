@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- viewBox= -strokeWidth/2 -strokeWidth/2 300+strokeWidth 300+strokeWidth -->
+<svg viewBox="-8 -8 316 316" xmlns="http://www.w3.org/2000/svg">
+    <path d="
+    M 0 100
+    v 100
+    l 100 100
+    h 200
+    v -300
+    h -200
+    z
+    " fill="green" stroke="orange" stroke-width="16" stroke-linejoin="round"/>
+</svg>
