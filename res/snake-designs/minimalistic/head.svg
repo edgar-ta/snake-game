@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-
-    <!-- path d= "
-    M 200-strokeWidth/2 strokeWidth/2
-    l -200+strokeWidth 100-strokeWidth/2
-    l 200-strokeWidth 100-strokeWidth/2
-    z
-    " -->
-
+<!-- viewBox= -strokeWidth/2 -strokeWidth/2 300+strokeWidth 300+strokeWidth -->
+<svg viewBox="-8 -8 216 216" xmlns="http://www.w3.org/2000/svg">
     <path d="
-    M 192 8
-    l -184 92
-    l 184 92
+    M 200 0
+    l -200 100
+    l 200 100
     z
     " fill="green" stroke="orange" stroke-width="16" stroke-linejoin="round"/>
 </svg>
