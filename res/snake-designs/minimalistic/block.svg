@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <!-- <circle cx="100" cy="100" r=100-strokeWidth fill="green" stroke="orange" stroke-width="16" /> -->
+    <circle cx="100" cy="100" r="92" fill="green" stroke="orange" stroke-width="16" />
+</svg>

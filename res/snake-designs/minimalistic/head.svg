@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+
+    <!-- path d= "
+    M 200-strokeWidth/2 strokeWidth/2
+    l -200+strokeWidth 100-strokeWidth/2
+    l 200-strokeWidth 100-strokeWidth/2
+    z
+    " -->
+
+    <path d="
+    M 192 8
+    l -184 92
+    l 184 92
+    z
+    " fill="green" stroke="orange" stroke-width="16" stroke-linejoin="round"/>
+</svg>
