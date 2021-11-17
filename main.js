@@ -1,7 +1,7 @@
-import { Board } from "./board.js";
-import { SnakeBlock, SnakeHead } from "./snake-block.js";
-import { Snake } from "./snake.js";
-import { Apple } from "./apple.js";
+import { Board } from "./scripts/board.js";
+import { SnakeBlock, SnakeHead } from "./scripts/snake-block.js";
+import { Snake } from "./scripts/snake.js";
+import { Apple } from "./scripts/apple.js";
 
 customElements.define("board-div", Board, { "extends": "div" });
 customElements.define("snake-block", SnakeBlock, { "extends": "div" });
