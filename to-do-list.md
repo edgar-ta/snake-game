@@ -12,6 +12,10 @@
     I might make the board to remove the different blocks that it doesn't
     use, or something like that
 
+    I came up with an idea; make the board slightly larger than 2n<sup>2</sup>,
+    (while keeping the positions of every block) so that the new blocks added
+    don't overflow
+
 - [ ] **Make the menu actually work**
 - [ ] **Implement animation in the movement of the blocks**
 

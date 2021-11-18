@@ -42,6 +42,8 @@ export class Board extends HTMLDivElement {
             for (let j = 0; j < this.n; j++) {
                 let block = document.createElement("div");
                 block.setAttribute("class", "board__block");
+                block.style.gridRow = `${i+1}`;
+                block.style.gridColumn = `${j+1}`;
                 this.appendChild(block);
                 this.positions.push([i, j]);
             }

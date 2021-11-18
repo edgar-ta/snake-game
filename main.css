@@ -101,7 +101,9 @@ body {
 .board {
     display: inline-grid;
     position: relative;
-    grid-template: repeat(var(--board-n), var(--block-side)) / repeat(var(--board-n), var(--block-side));
+    grid-template: 
+        repeat(var(--board-n), var(--block-side)) repeat(var(--board-n), 0) / 
+        repeat(var(--board-n), var(--block-side)) repeat(var(--board-n), 0);
     gap: 0.5vw 0.5vh;
     box-sizing: content-box;
     padding: 0.5vw 0.5vh;

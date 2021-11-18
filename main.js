@@ -109,6 +109,7 @@ function togglePause() {
         gameIndex = setInterval(advance, 1000 / frames);
         isRunning = true;
     }
+    apple.togglePause();
 }
 
 /**
@@ -136,11 +137,11 @@ function onAppleCapture() {
 }
 
 /**
- * Disables the apple and generates a new
+ * Finishes the apple and generates a new
  * @fire When the apple has exceeded the time to be consumed
  */
 function onAppleMissed() {
-    apple.disable();
+    apple.finish();
     apple = generateApple();
 }
 
