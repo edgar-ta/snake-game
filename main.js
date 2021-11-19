@@ -104,12 +104,13 @@ function onStart() {
 function togglePause() {
     if (isRunning) {
         clearInterval(gameIndex);
+        apple.alarm.pause();
         isRunning = false;
     } else {
         gameIndex = setInterval(advance, 1000 / frames);
+        apple.alarm.resume();
         isRunning = true;
     }
-    apple.togglePause();
 }
 
 /**
@@ -138,11 +139,11 @@ function onAppleCapture() {
 }
 
 /**
- * Finishes the apple and generates a new
+ * Ends the apple and generates a new
  * @fire When the apple has exceeded the time to be consumed
  */
 function onAppleMissed() {
-    apple.finish();
+    apple.end();
     apple = generateApple();
 }
 

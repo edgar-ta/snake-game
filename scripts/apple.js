@@ -2,50 +2,30 @@
  * Model of a proper timeout object
  */
 class Alarm {
-    /**
-     * The date the alarm was set to begin
-     * @type {Date}
-     */
-    start;
 
     /**
-     * The date the alarm finished
-     * @type {Date}
+     * Marker used to keep track of the pauses made to the alarm
+     * @type {number}
      */
-    end;
+    timemarker;
 
     /**
      * Number of miliseconds the alarm will take to execute
-     * (since its begins til finishes)
+     * (since it starts til it ends)
      * @type {number}
      */
-    timespan;
+    timeout;
 
     /**
-     * Number of miliseconds passed since the alarm began
+     * Total number of miliseconds passed since the alarm started
      * 
      * ---
-     * This property is intended to be private since it doesn't
-     * update continuely, but whenever `update()` is called.
-     * 
-     * To get the currently ellapsed time when called, use the
-     * `getEllapsedTime()` function (which updates and returns this property)
+     * This property is intended to help keep track of the pauses
+     * made to the alarm. It doesn't update continously, but whenever
+     * `pause` is called
      * @type {number}
      */
-    ellapsed;
-
-    /**
-     * Number of miliseconds to pass til the alarm finishes
-     * 
-     * ---
-     * This property is intended to be private since it doesn't
-     * update continuely, but whenever `update()` is called.
-     * 
-     * To get the currently left time when called, use the
-     * `getLeftTime()` function (which updates and returns this property)
-     * @type {number}
-     */
-    left;
+    totalEllapsed;
 
     /**
      * If the alarm is paused
@@ -75,100 +55,108 @@ class Alarm {
      * Creates the alarm
      * @constructor Creates the alarm
      * @param {callback} callback Callback the alarm will execute
-     * @param {number} timespan Miliseconds the alarm will take to execute
-     * @param {boolean} toBegin Whether the alarm should begin when created (true by default)
+     * @param {number} timeout Miliseconds the alarm will take to execute
+     * @param {boolean} toStart Whether the alarm should start running when created (true by default)
      */
-    constructor(callback, timespan, toBegin = true) {
+    constructor(callback, timeout, toStart = true) {
         this.callback = callback;
-        this.timespan = timespan;
-        this.start = Date.now();
+        this.timeout = timeout;
         this.isPaused = false;
         this.isConsumed = false;
-        if (toBegin) this.begin();
+        this.totalEllapsed = 0;
+        if (toStart) this.start();
     }
 
     /**
      * Makes the alarm start
      * 
      * ---
-     * Sets a timeout that will execute the alarm's callback
-     * and finish it in `timespan` miliseconds
+     * Updates the marker to now, sets a timeout that will 
+     * execute the alarm's callback and end it in `timeout` miliseconds
      */
-    begin() {
+    start() {
+        this.timemarker = Date.now();
         this.index = setTimeout(() => {
             this.callback();
-            this.finish();
-        }, this.timespan);
+            this.end();
+        }, this.timeout);
     }
 
     /**
-     * Finishes the alarm
+     * Ends the alarm
      * 
      * ---
-     * Sets the end date of the alarm, the
-     * `isConsumed` and `isPaused` variables, removes
-     * its timeout and sets its index to -1
+     * Sets the `isConsumed` and `isPaused` variables
+     * to `true` and `false`, respectively, and removes
+     * its timeout, setting its index to `NEGATIVE_INFINITY`
      */
-    finish() {
-        this.end = Date.now();
+    end() {
         this.isConsumed = true;
         this.isPaused = false;
         clearTimeout(this.index);
-        this.index = -1;
+        this.index = Number.NEGATIVE_INFINITY;
     }
 
     /**
-     * Updates the left and ellapsed variables
-     */
-    update() {
-        this.ellapsed = this.start - Date.now();
-        this.left = this.timespan - this.ellapsed;
-    }
-
-    /**
-     * Toggles the alarm between paused and unpaused (running)
+     * Gets the time that the alarm has been running
      * 
      * ---
-     * If the alarm is consumed, then it does nothing
-     */
-    togglePause() {
-        if (this.isConsumed) return;
-        if (this.isPaused) 
-            this.index = setTimeout(() => {
-                this.callback();
-                this.finish();
-            }, this.left);
-        else {
-            // save the time left when the alarm is paused
-            // to use it when it is unpaused
-            this.update();
-            clearTimeout(this.index);
-        }
-        this.isPaused = !this.isPaused;
-    }
-
-    /**
-     * Gets the ellapsed time of the alarm
-     * 
-     * ---
-     * Updates the variable and then returns it
-     * @returns {number} Currently ellapsed time
+     * Notice how it doesn't just get the time passed
+     * since the alarm started, but the time
+     * passed while the alarm hasn't been paused.
+     * @returns {number} Time ellapsed for the alarm
      */
     getEllapsedTime() {
-        this.update();
-        return this.ellapsed;
+        return this.totalEllapsed + (this.isPaused? 0: Date.now() - this.timemarker);
     }
 
     /**
-     * Gets the left time of the alarm
+     * Gets the time that the alarm will need to execute
      * 
      * ---
-     * Updates the variable and then returns it
-     * @returns {number} Currently left time
+     * The calculation is pretty simple; it only calls `getEllapsedTime`
+     * and substracts it from the total timeout of the alarm
+     * @returns {number} Time left for the alarm to execute (end)
      */
     getLeftTime() {
-        this.update();
-        return this.left;
+        return this.timeout - this.getEllapsedTime();
+    }
+
+    /**
+     * Pauses the alarm
+     * 
+     * ---
+     * If the alarm is consumed, it does nothing.
+     * 
+     * Clears its timeout and updates `totalEllapsed`
+     * to save the time passed since the last time it
+     * started running (the timemarker) to now
+     */
+    pause() {
+        if (this.isConsumed) return;
+        this.totalEllapsed += Date.now() - this.timemarker;
+        clearTimeout(this.index);
+        // debugger
+        // this.totalEllapsed = getEllapsedTime();
+        this.index = Number.NEGATIVE_INFINITY;
+        this.isPaused = true;
+    }
+
+    /**
+     * Unpauses the alarm (makes it run again)
+     * 
+     * ---
+     * Updates the timemarker (to keep track of next possible pauses) 
+     * and sets the timeout again, with the time left
+     */
+    resume() {
+        // debugger
+        this.timemarker = Date.now();
+        this.index = setTimeout(() => {
+            this.callback();
+            this.end()
+        }, this.timeout - this.totalEllapsed /* this.getLeftTime() */);
+        this.isPaused = false;
     }
 
 }
@@ -206,15 +194,15 @@ class Apple extends HTMLDivElement {
      * @param {number} x X coordinate of the apple
      * @param {number} y Y coordinate of the apple
      * @param {number} maxPoints Max amount of points the snake will get for capturing the apple
-     * @param {number} timespan Timespan the snake will have to capture the apple (miliseconds)
+     * @param {number} timeout timeout the snake will have to capture the apple (miliseconds)
      */
-    constructor(x = 1, y = 1, maxPoints = 10, timespan = 1000) {
+    constructor(x = 1, y = 1, maxPoints = 10, timeout = 1000) {
         super();
         this.setX(x);
         this.setY(y);
-        this.maxPoints = maxPoints;
-        this.alarm = new Alarm(() => this.remove(), timespan);
         this.setAttribute("class", "apple")
+        this.maxPoints = maxPoints;
+        this.alarm = new Alarm(() => this.remove(), timeout);
         this.innerHTML = `
         <svg viewBox="-8 -8 216 216" xmlns="http://www.w3.org/2000/svg">
             <circle cx="100" cy="100" r="100" fill="red" stroke="orange" stroke-width="16" />
@@ -249,10 +237,9 @@ class Apple extends HTMLDivElement {
      * @return {number} Correspondant points for the capture
      */
     capture() {
-        let audio = new Audio("../res/other/snake-bite.mp3");
-        audio.play();
-        this.finish();
-        return this.maxPoints * (this.alarm.getLeftTime() / this.alarm.timespan);
+        new Audio("../res/other/snake-bite.mp3").play();
+        this.end();
+        return this.maxPoints * (this.alarm.getLeftTime() / this.alarm.timeout);
     }
 
     /**
@@ -264,18 +251,11 @@ class Apple extends HTMLDivElement {
     }
 
     /**
-     * Toggles pause on the apple's alarm
+     * Removes the apple and ends its alarm
      */
-    togglePause() {
-        this.alarm.togglePause();
-    }
-
-    /**
-     * Removes the apple and finishes its alarm
-     */
-    finish() {
+    end() {
         this.remove();
-        this.alarm.finish();
+        this.alarm.end();
     }
 }
 
