@@ -119,6 +119,7 @@ function togglePause() {
  */
 function onLose() {
     alert("Better luck for the next one; do you want to play again?");
+    // document.reload();
 }
 
 /**
@@ -171,7 +172,7 @@ function onChangeDirection(e) {
  */
 function generateApple() {
     let [x, y] = getRandomElement(board.substractPositions(snake.getPositions()));
-    let apple = new Apple(x, y, 200, 4 * 1000 / frames);
+    let apple = new Apple(x, y, 200, 10 * 1000 / frames);
     board.appendChild(apple);
     return apple;
 }
