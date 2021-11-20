@@ -152,7 +152,7 @@ function onAppleMissed() {
  * 
  * ---
  * It responds to w, a, s, d as up, left, down, right, respectively
- * @param {KeyboardEven} e Event that triggers the function
+ * @param {KeyboardEvent} e Event that triggers the function
  */
 function onChangeDirection(e) {
     switch (e.key) {
