@@ -60,6 +60,12 @@ let apple;
 let isRunning = false;
 
 /**
+ * If the current game is paused
+ * @type {boolean}
+ */
+let isPaused = false;
+
+/**
  * Points of the current game
  * @type {number}
  */
@@ -96,20 +102,28 @@ function onStart() {
     restartBtn.classList.remove("control-btn--disabled");
 }
 
+function onRestart() {
+    // 
+    location.reload();
+}
+
 /**
  * If the game is running, then clear the interval
  * that makes the snake advance; if not, re-create
  * that interval
+ * 
+ * If the game is not running, then it does nothing
  */
 function togglePause() {
-    if (isRunning) {
+    if (!isRunning) return;
+    if (isPaused) {
         clearInterval(gameIndex);
         apple.alarm.pause();
-        isRunning = false;
+        isPaused = false;
     } else {
         gameIndex = setInterval(advance, 1000 / frames);
         apple.alarm.resume();
-        isRunning = true;
+        isPaused = true;
     }
 }
 
@@ -154,12 +168,15 @@ function onAppleMissed() {
  * It responds to w, a, s, d as up, left, down, right, respectively
  * @param {KeyboardEvent} e Event that triggers the function
  */
-function onChangeDirection(e) {
+function onKeyDown(e) {
     switch (e.key) {
         case "w": snake.head.setDirection(SnakeBlock.UP); break;
         case "a": snake.head.setDirection(SnakeBlock.LEFT); break;
         case "s": snake.head.setDirection(SnakeBlock.DOWN); break;
-        case "d": snake.head.setDirection(SnakeBlock.RIGHT);
+        case "d": snake.head.setDirection(SnakeBlock.RIGHT); break;
+        case "k": togglePause(); break;
+        case "r": location.reload(); break;
+        case "s": onRestart(); break;
     }
 }
 
@@ -236,4 +253,4 @@ function advance() {
 
 document.querySelector("#startBtn").addEventListener("click", onStart);
 document.querySelector("#pauseBtn").addEventListener("click", togglePause);
-document.addEventListener("keydown", onChangeDirection);
+document.addEventListener("keydown", onKeyDown);

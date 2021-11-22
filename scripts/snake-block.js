@@ -140,6 +140,14 @@ class SnakeBlock extends HTMLDivElement {
  */
 class SnakeHead extends SnakeBlock {
     /**
+     * Variable that will help set the direction of the head,
+     * making sure it only sets it every time it advances
+     * avoiding the ability to rotate the head and bite itself
+     * @type {number}
+     */
+    superDirection;
+
+    /**
      * Passes the values and sets its class
      * @constructor Self-explanatory
      * @param {number} initialX Initial coordinate of the head
@@ -148,6 +156,7 @@ class SnakeHead extends SnakeBlock {
      */
     constructor(initialX, initialY, initialDirection) {
         super(initialX, initialY, initialDirection);
+        this.superDirection = initialDirection;
         this.setAttribute("class", "snake-head");
         this.innerHTML = `
         <svg viewBox="-8 -8 316 316" xmlns="http://www.w3.org/2000/svg">
@@ -189,7 +198,8 @@ class SnakeHead extends SnakeBlock {
      * on its direction
      */
     advance() {
-        switch (this.direction) {
+        this.superDirection = this.direction;
+        switch (this.superDirection) {
             case SnakeBlock.UP:
                 this.setY(this.y - 1);
                 break;
@@ -224,7 +234,7 @@ class SnakeHead extends SnakeBlock {
      * @returns {boolean} Whether the snake should change its direction or not
      */
     isValidDirection(direction) {
-        return this.direction != direction && Math.abs(this.direction - direction) != 2;
+        return Math.abs(this.superDirection - direction) != 2;
     }
 }
 
