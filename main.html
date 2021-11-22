@@ -66,9 +66,7 @@
         </div>
     </div>
     <div class="wrapper">
-        <div is="board-div" n="10" id="board">
-            <button class="board__start-btn" id="startBtn">></button>            
-        </div>
+        <div is="board-div" n="10" id="board"></div>
         <div class="control-panel">
             <label>
                 Points:
@@ -78,7 +76,8 @@
                 Blocks Long:
                 <output id="blocksLong">0</output>
             </label>
-            <button disabled id="pauseBtn" class="control-btn control-btn--disabled">Pause</button>
+            <button id="startBtn" class="control-btn">></button>
+            <button disabled id="pauseBtn" class="control-btn control-btn--pause control-btn--disabled">Pause</button>
             <button disabled id="restartBtn" class="control-btn control-btn--restart control-btn--disabled">Restart</button>
             <div class="direction-panel">
                 <button class="direction-btn"></button>

@@ -237,7 +237,7 @@ class Apple extends HTMLDivElement {
      * @return {number} Correspondant points for the capture
      */
     capture() {
-        new Audio("../res/other/snake-bite.mp3").play();
+        new Audio("../res/sounds/snake-bite.mp3").play();
         this.end();
         return this.maxPoints * (this.alarm.getLeftTime() / this.alarm.timeout);
     }

@@ -3,10 +3,14 @@ import { SnakeBlock, SnakeHead } from "./scripts/snake-block.js";
 import { Snake } from "./scripts/snake.js";
 import { Apple } from "./scripts/apple.js";
 
+
+
 customElements.define("board-div", Board, { "extends": "div" });
 customElements.define("snake-block", SnakeBlock, { "extends": "div" });
 customElements.define("snake-head", SnakeHead, { "extends": "div" });
 customElements.define("apple-div", Apple, { "extends": "div" });
+
+
 
 /**
  * Gets a random element from an array
@@ -43,7 +47,7 @@ let snake;
  * Board in which the snake is going to be contained
  * @type {Board}
  */
-let board = document.querySelector("#board");
+const board = document.querySelector("#board");
 
 /**
  * Apple the snake will have to capture
@@ -74,7 +78,17 @@ let points = 0;
 /**
  * Index of the interval that makes the snake move
  */
-let gameIndex = -1;
+let gameIndex = Number.NEGATIVE_INFINITY;
+
+
+
+const startBtn = document.querySelector("#startBtn");
+const pauseBtn = document.querySelector("#pauseBtn");
+const restartBtn = document.querySelector("#restartBtn");
+const pointsOut = document.querySelector("#points");
+const blocksLongOut = document.querySelector("#blocksLong");
+
+
 
 /**
  * Initializes the values of the snake and apple and
@@ -82,6 +96,8 @@ let gameIndex = -1;
  * @todo Get custom SnakeBlocks through menu
  */
 function onStart() {
+    if (isRunning) return onRestart();
+
     snake = generateSnake();
     apple = generateApple();
     gameIndex = setInterval(advance, 1000 / frames);
@@ -89,22 +105,52 @@ function onStart() {
 
     // this is getting kinda tricky, I should create another
     // function to help set everything in place
-    document.querySelector("#startBtn").remove();
-
-    let 
-    pauseBtn = document.querySelector("#pauseBtn"), 
-    restartBtn = document.querySelector("#restartBtn");
-
+    
+    startBtn.setAttribute("disabled", "true");
     pauseBtn.removeAttribute("disabled");
     restartBtn.removeAttribute("disabled");
-
+    
+    startBtn.classList.add("control-btn--disabled");
     pauseBtn.classList.remove("control-btn--disabled");
     restartBtn.classList.remove("control-btn--disabled");
 }
 
+/**
+ * Handles the restart of a game
+ * 
+ * Pauses the game, then asks the player for their 
+ * final desition of restarting the game and,
+ * if they agree, the game is ended and then 
+ * started again, if they don't the game just continues
+ */
 function onRestart() {
-    // 
-    location.reload();
+    togglePause();
+    if (confirm("Do you want to restart this game? It hasn't ended yet")) {
+        onEnd();
+        onStart();
+    } else { togglePause(); }
+}
+
+/**
+ * Finishes the game
+ * 
+ * Deletes any trace of the previous game and
+ * resets all variables to their original value
+ */
+function onEnd() {
+    snake.execOnAll((block) => block.remove());
+    apple.end();
+    clearInterval(gameIndex);
+
+    snake = null;
+    apple = null;
+    points = 0;
+    gameIndex = Number.NEGATIVE_INFINITY;
+    isRunning = false;
+    isPaused = false;
+
+    pointsOut.textContent = "0";
+    blocksLongOut.textContent = "0";
 }
 
 /**
@@ -112,19 +158,27 @@ function onRestart() {
  * that makes the snake advance; if not, re-create
  * that interval
  * 
+ * ---
  * If the game is not running, then it does nothing
  */
 function togglePause() {
     if (!isRunning) return;
-    if (isPaused) {
-        clearInterval(gameIndex);
-        apple.alarm.pause();
-        isPaused = false;
-    } else {
-        gameIndex = setInterval(advance, 1000 / frames);
-        apple.alarm.resume();
-        isPaused = true;
-    }
+    if (!isPaused) { 
+        clearInterval(gameIndex); 
+        apple.alarm.pause(); } 
+    else { 
+        gameIndex = setInterval(advance, 1000 / frames); 
+        apple.alarm.resume(); }
+    isPaused = !isPaused;
+}
+
+/**
+ * Sets the direction of the snake; making sure the game is running
+ * and is not paused
+ * @param {number} direction New direction to set the snake to
+ */
+function setDirection(direction) {
+    if (isRunning && !isPaused) snake.head.setDirection(direction);
 }
 
 /**
@@ -133,8 +187,9 @@ function togglePause() {
  * @todo Actually respond to the user's answer
  */
 function onLose() {
-    alert("Better luck for the next one; do you want to play again?");
-    // document.reload();
+    onEnd();
+    if (confirm("Better luck for the next one; do you want to play again?"))
+    onStart();
 }
 
 /**
@@ -170,13 +225,15 @@ function onAppleMissed() {
  */
 function onKeyDown(e) {
     switch (e.key) {
-        case "w": snake.head.setDirection(SnakeBlock.UP); break;
-        case "a": snake.head.setDirection(SnakeBlock.LEFT); break;
-        case "s": snake.head.setDirection(SnakeBlock.DOWN); break;
-        case "d": snake.head.setDirection(SnakeBlock.RIGHT); break;
+        case "w": setDirection(SnakeBlock.UP); break;
+        case "a": setDirection(SnakeBlock.LEFT); break;
+        case "s": setDirection(SnakeBlock.DOWN); break;
+        case "d": setDirection(SnakeBlock.RIGHT); break;
+
         case "k": togglePause(); break;
+        case " ": onStart(); break;
+        
         case "r": location.reload(); break;
-        case "s": onRestart(); break;
     }
 }
 
@@ -235,9 +292,9 @@ function isOutOfBoundaries() {
  * Lets the user know how many points they've got so far
  */
 function updatePoints() {
-    document.querySelector("#points").textContent = roundToHalfs(points);
+    pointsOut.textContent = roundToHalfs(points);
     // 1 extra for the head
-    document.querySelector("#blocksLong").textContent = snake.blocks.length + 1;
+    blocksLongOut.textContent = snake.blocks.length + 1;
 }
 
 /**
@@ -251,6 +308,6 @@ function advance() {
     if (snake.head.sameAs(apple)) onAppleCapture();
 }
 
-document.querySelector("#startBtn").addEventListener("click", onStart);
-document.querySelector("#pauseBtn").addEventListener("click", togglePause);
+startBtn.addEventListener("click", onStart);
+pauseBtn.addEventListener("click", togglePause);
 document.addEventListener("keydown", onKeyDown);
