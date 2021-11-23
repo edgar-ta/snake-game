@@ -18,26 +18,45 @@ export class Board extends HTMLDivElement {
      */
     n;
 
-
     /**
-     * Passes the size, sets its correspondant class and populates the board
+     * Passes the size, sets its correspondant class and `n`
      * @constructor 
-     * @param {number} n Size of the board
      */
     constructor() {
         super();
-        this.n = Number.parseInt(this.getAttribute("n"));
         this.setAttribute("class", "board");
-        this.populateBoard();
+        // default size
+        this.setN(15);
     }
     
     /**
-     * Removes all blocks from the board and adds n^2 new ones.
+     * Sets the new n dimension of the board
      * 
-     * Also, it populates the free positions of the board
+     * ---
+     * Also, removes all blocks from the board, adds n^2 new ones.
+     * and, it populates the free positions of the board.
+     * 
+     * The calculation for the length of the blocks inside the board comes
+     * from its original grid; `repeat(10, 7vmin)`.  
+     * If there are `n - 1`
+     * gaps that, as defined in main.css measure `0.5vmin`, then the
+     * length of the gaps is `(n - 1)vmin / 2`; 4.5vmin when n = 10, and the total length of the
+     * model board is 10 * 7vmin + 4.5vmin = 74.5vmin.  
+     * If we want all boards to measure the same, we can substract the gap length from
+     * the total length and then (since there will be `n` blocks in total that will together
+     * occupy that length) divide by n.
+     * Finally, the expresion ends up being:  
+     * blockWidth   = (74.5vmin - (n - 1)vmin / 2) / n  
+     *              = (149vmin / 2 - (n - 1)vmin / 2) / n  
+     *              = (149vmin - (n - 1)vmin) / (2 * n)  
+     *              = (149vmin - nvmin + 1vmin) / (2 * n)  
+     *              = `(150vmin - nvmin) / (2 * n)`
      */
-    populateBoard() {
-        this.querySelectorAll(".block").forEach(block => block.remove());
+    setN(newN) {
+        this.n = newN;
+        let blockWidth = (150 - this.n) / (2 * this.n);
+        this.style.gridTemplate = `repeat(${this.n}, ${blockWidth}vmin) / repeat(${this.n}, ${blockWidth}vmin)`;
+        this.replaceChildren();
         for (let i = 0; i < this.n; i++) {
             for (let j = 0; j < this.n; j++) {
                 let block = document.createElement("div");
@@ -45,7 +64,7 @@ export class Board extends HTMLDivElement {
                 block.style.gridRow = `${i+1}`;
                 block.style.gridColumn = `${j+1}`;
                 this.appendChild(block);
-                this.positions.push([i, j]);
+                this.positions.push([i + 1, j + 1]);
             }
         }
     }
