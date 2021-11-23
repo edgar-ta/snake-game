@@ -3,6 +3,8 @@
     --block-side: 7vmin;
     --board-n: 10;
     --block-bg: gray;
+    --border-r: 3px;
+    --ctrl-panel-spacing: 0.5vh;
 }
 
 body {
@@ -44,10 +46,17 @@ body {
     padding: 0.25rem;
     padding-left: 0.75rem;
     position: relative;
-    background-color: var(--bg-color, beige);
+    background-color: var(--bg-color, #fafafa);
     color: var(--txt-color, black);
     cursor: pointer;
-    border-radius: 3px;
+    border-radius: var(--border-r);
+}
+
+/* I don't know how to make this work properly */
+.menu__p:not(.menu__p--first):hover::after {
+    content: none;
+    background-color: beige;
+    width: 100%;
 }
 
 .menu__p:hover {
@@ -65,6 +74,7 @@ body {
     --txt-color: white;
     padding-left: 00.25rem;
     text-align: center;
+    border-left: none;
 }
 
 .menu__p--first:hover {
@@ -140,9 +150,32 @@ body {
 }
 
 .control-btn {
-    --bg-hue: 120;
+    --bg-hue: 210;
     color: white;
     background-color: hsl(var(--bg-hue), 100%, 50%);
+    border: 1px solid hsl(var(--bg-hue), 100%, 30%);
+    border-radius: var(--border-r);
+    cursor: pointer;
+    height: 5vh;
+    width: 15vmin;
+    margin: var(--ctrl-panel-spacing) 0;
+}
+
+.control-btn:not(.control-btn--disabled):hover {
+    background-color: hsl(var(--bg-hue), 100%, 40%);
+}
+
+.control-btn:not(.control-btn--disabled):active, .control-btn:not(.control-btn--disabled):focus-visible {
+    outline: 2px auto hsl(var(--bg-hue), 100%, 40%);
+}
+
+.control-btn--start {
+    font-size: large;
+    margin-top: calc(8 * var(--ctrl-panel-spacing));
+}
+
+.control-btn--pause {
+    --bg-hue: 120;
 }
 
 .control-btn--restart {
@@ -151,16 +184,25 @@ body {
 
 .control-btn--disabled {
     background-color: hsl(var(--bg-hue), 100%, 80%);
+    cursor: default;
 }
 
 .direction-panel {
     display: grid;
-    grid-template: repeat(3, 3vmin) / repeat(3, 3vmin);
+    grid-template: repeat(3, 5vmin) / repeat(3, 5vmin);
+    margin-top: calc(7 * var(--ctrl-panel-spacing));
 }
 
 .direction-btn {
     grid-row: var(--grid-row, 1);
     grid-column: var(--grid-column, 2);
+    border-radius: var(--border-r);
+    border: 1px solid #969696;
+    cursor: pointer;
+}
+
+.direction-btn:hover {
+    background-color: #969696;
 }
 
 .direction-btn--right {

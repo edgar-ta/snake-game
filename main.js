@@ -232,7 +232,7 @@ function onKeyDown(e) {
 
         case "k": togglePause(); break;
         case " ": onStart(); break;
-        
+
         case "r": location.reload(); break;
     }
 }
@@ -308,6 +308,15 @@ function advance() {
     if (snake.head.sameAs(apple)) onAppleCapture();
 }
 
+
+
 startBtn.addEventListener("click", onStart);
 pauseBtn.addEventListener("click", togglePause);
 document.addEventListener("keydown", onKeyDown);
+
+
+
+document.querySelector(".direction-btn--up").addEventListener("click", () => setDirection(SnakeBlock.UP));
+document.querySelector(".direction-btn--right").addEventListener("click", () => setDirection(SnakeBlock.RIGHT));
+document.querySelector(".direction-btn--down").addEventListener("click", () => setDirection(SnakeBlock.DOWN));
+document.querySelector(".direction-btn--left").addEventListener("click", () => setDirection(SnakeBlock.LEFT));
